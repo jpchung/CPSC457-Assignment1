@@ -1,0 +1,61 @@
+CPSC 457
+Assignment 1 - Part B
+Johnny Phuong Chung
+
+----------
+Question 1:
+Why is Linux written in C? Would it be better to write an operating system in a higher-level language? Would it be better to write an operating system in a lower-level language?
+
+A major reason for Linux being written in C programming language was that Linux was developed from, and expanded on, Unix based operating systems. Most if not all modules of Unix were written in C, so by convention Linux was also built using C. C was also an appropriate in that it was a language high-level enough to to reduce complexity for kernel development, while also being low-level enough to still be bound to the hardware. If we were to write an operating system in a higher-level language, there would be reduced relationship between the OS and the physical hardware, which is undesired given that the purpose of the OS is to govern hardware access. Conversely, OS development with a lower-level language would also prove more difficult than with C due to the complexity of micromanaging data in the hardware.
+
+----------
+Question 2:
+Who is the originator of Linux? What date was Linux first announced to the world? What was the original purpose of Linux? When was the Linux Foundation founded? What is the purpose of the Linux Foundation?
+
+The originator of the Linux operating system is Linus Torvalds. Torvalds first announced the creation of Linux to the world on Aug 25, 1991 via his usenet account while at the University of Helsinki, and the original purpose of Linux was to be a free Unix-based (specifically MINIX) OS for Intel 386/486 machines that Torvalds was building as a hobby. As a result of Linux and the open-source movement, the Linux Foundation was founded in 2000 with the purpose of promoting and protecting Linux and collaborative kernel development.
+
+
+----------
+Question 3: 
+What is the difference between st_size and st_blocks? Should you be able to calculate one from the other? What are the differences between each of the three timespec fields? What Linux command lets a user change the access and modification times of a file?
+
+Both st_size and st_blocks are members of struct stat, with the difference being that st_size contains the stat struct's file size (regular files) or length (symbolic links) in bytes, whereas st_blocks only details the number of memory blocks allocated for a given struct stat object. As such, you should not be able to calculate one from the other, because while you could determine how many blocks are allocated given only st_size, you could not determine the exact file size or length given only st_blocks.
+
+The three timespec fields of struct stat differ in the following ways:
+1) st_atime is the time of the last access to the file
+2) st_mtime is the time of last modification to the file
+3) st_ctime is the time of last change to file attributes
+
+The Linux command that allows users to change the access and modification times of a file is the command $touch.
+
+
+----------
+Question 4: 
+Instructions related to accessing I/O devices are typically privileged instructions, that is, they can be executed in kernel mode, but not user mode. Give a reason why these instructions are privileged. (From Modern Operating Systems, Chapter 1)
+
+One reason for making I/O access instructions privileged is to restrict hardware access for certain users. For example, if all users were given unlimited access to I/O devices, that may include malicious or ignorant users who could either intentionally or inadvertantly damage the device and other parts of hardware. 
+Another reason may be to mitigate costs of unlimited use of the I/O device, such as a communal printer. We would want to restrict the maximum amount of print jobs and pages for lower tier users, and allow more for users with higher access privileges. 
+
+
+Question 5: 
+To a programmer, a system call looks like any other call to a library procedure. Is it important that a programmer know which library procedures result in system calls? Under what circumstances and why? (From Modern Operating Systems, Chapter 1)
+
+It is important that programmers know which libary procedures result in system calls, as system calls require switches from user mode to kernel mode via a system trap, each of which results in slower execution times. As such, if the ignorant programmer were to use calls without knowledge of which ones were system calls, this would cause significantly slower running times for their program that could have otherwise been avoided.
+
+
+
+REFERENCES:
+- Question 1:
+	http://programmers.stackexchange.com/questions/203024/why-not-have-a-high-level-language-based-os-are-low-level-languages-more-effici
+- Question 2:
+	http://www.thelinuxdaily.com/2010/04/the-first-linux-announcement-from-linus-torvalds/
+	http://www.linuxfoundation.org/
+- Question 3:
+	http://pubs.opengroup.org/onlinepubs/009695399/basedefs/sys/stat.h.html
+	http://www.shellhacks.com/en/Faking-a-Files-Access-Modify-and-Change-TimeStamps-in-Linux
+	http://linux.die.net/man/1/touch
+- Question 4:
+	Modern Operating System - 4th Edition (Tanenbaum and Bos, 2014), Chapter 1
+- Question 5:
+	http://stackoverflow.com/questions/2668747/system-call-vs-function-call
+
